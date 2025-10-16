@@ -62,3 +62,33 @@ async function generateTimetable() {
   html += "</ul>";
   document.getElementById("timetable").innerHTML = html;
 }
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://xypnidvasmcajnlaises.supabase.co'
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'  // replace this
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+const form = document.getElementById('timetableForm')
+const result = document.getElementById('result')
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault()
+
+  const periods = document.getElementById('periods').value
+  const timings = document.getElementById('timings').value
+  const teachers = document.getElementById('teachers').value
+
+  result.textContent = "⏳ Generating Timetable..."
+
+  // store in Supabase
+  const { data, error } = await supabase
+    .from('college_data')
+    .insert([{ periods, timings, teachers }])
+
+  if (error) {
+    result.textContent = "❌ Error saving data."
+    console.error(error)
+  } else {
+    result.textContent = "✅ Timetable data saved successfully!"
+  }
+})
