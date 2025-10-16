@@ -1,6 +1,6 @@
 // === Supabase Connection ===
-const SUPABASE_URL = "https://YOUR-PROJECT-URL.supabase.co";
-const SUPABASE_KEY = "YOUR-ANON-KEY";
+const SUPABASE_URL = "https://xypnidvasmcajnlaises.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5cG5pZHZhc21jYWpubGFpc2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDI0MTksImV4cCI6MjA3NjExODQxOX0.0BkjTEbKmF0SsebnLgibfopwcCTYx3BT4diJVqGWhOM";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // === UI Logic ===
@@ -65,7 +65,7 @@ async function generateTimetable() {
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const SUPABASE_URL = 'https://xypnidvasmcajnlaises.supabase.co'
-const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'  // replace this
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5cG5pZHZhc21jYWpubGFpc2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDI0MTksImV4cCI6MjA3NjExODQxOX0.0BkjTEbKmF0SsebnLgibfopwcCTYx3BT4diJVqGWhOM'  // replace this
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 const form = document.getElementById('timetableForm')
