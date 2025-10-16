@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timely - College Timetable Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Timely</h1>
+    <p>AI-Powered College Timetable Generator</p>
+  </header>
+
+  <main>
+    <section id="setup">
+      <h2>Setup Information</h2>
+      <button onclick="showForm('course')">Add Courses & Subjects</button>
+      <button onclick="showForm('lecturer')">Add Lecturers</button>
+      <button onclick="generateTimetable()">Generate Timetable</button>
+    </section>
+
+    <section id="forms"></section>
+
+    <section id="timetable"></section>
+  </main>
+
+  <footer>
+    <p>© 2025 Timely</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+  </html>
