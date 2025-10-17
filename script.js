@@ -3,75 +3,114 @@ const SUPABASE_URL = "https://xypnidvasmcajnlaises.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5cG5pZHZhc21jYWpubGFpc2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDI0MTksImV4cCI6MjA3NjExODQxOX0.0BkjTEbKmF0SsebnLgibfopwcCTYx3BT4diJVqGWhOM";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// === Add Teacher ===
-document.getElementById("addTeacherBtn").addEventListener("click", async () => {
+// Wait for DOM
+document.addEventListener("DOMContentLoaded", () => {
+  loadTeachers();
+  loadSubjects();
+});
+
+// 🧑‍🏫 Add Teacher
+async function addTeacher() {
   const name = document.getElementById("teacherName").value.trim();
-  const lectures = parseInt(document.getElementById("lecturesPerWeek").value) || 0;
+  const subject = document.getElementById("teacherSubject").value.trim();
+  const lectures = parseInt(document.getElementById("lecturesPerWeek").value);
 
-  if (!name) return alert("Please enter teacher name!");
+  if (!name || !subject || !lectures) {
+    alert("Please fill all teacher details.");
+    return;
+  }
 
-  const { data, error } = await supabase
-    .from("teachers")
-    .insert([{ name, lectures_per_week: lectures, available: true }]);
+  const { error } = await supabase.from("teachers").insert([{ 
+    name, 
+    subject, 
+    lectures_per_week: lectures 
+  }]);
 
-  const msg = document.getElementById("teacherMsg");
   if (error) {
-    msg.textContent = "❌ Error: " + error.message;
+    alert("Error adding teacher: " + error.message);
   } else {
-    msg.textContent = "✅ Teacher added successfully!";
-    document.getElementById("teacherName").value = "";
-    document.getElementById("lecturesPerWeek").value = "";
+    alert("✅ Teacher added!");
+    clearTeacherFields();
     loadTeachers();
   }
-});
+}
 
-// === Add Subject ===
-document.getElementById("addSubjectBtn").addEventListener("click", async () => {
-  const subject = document.getElementById("subjectName").value.trim();
-  if (!subject) return alert("Please enter subject name!");
+function clearTeacherFields() {
+  document.getElementById("teacherName").value = "";
+  document.getElementById("teacherSubject").value = "";
+  document.getElementById("lecturesPerWeek").value = "";
+}
 
-  const { data, error } = await supabase.from("subjects").insert([{ name: subject }]);
-  const msg = document.getElementById("subjectMsg");
+// 📚 Add Subject
+async function addSubject() {
+  const name = document.getElementById("subjectName").value.trim();
+  const code = document.getElementById("subjectCode").value.trim();
+
+  if (!name || !code) {
+    alert("Please fill all subject details.");
+    return;
+  }
+
+  const { error } = await supabase.from("subjects").insert([{ name, code }]);
+
   if (error) {
-    msg.textContent = "❌ Error: " + error.message;
+    alert("Error adding subject: " + error.message);
   } else {
-    msg.textContent = "✅ Subject added successfully!";
-    document.getElementById("subjectName").value = "";
+    alert("✅ Subject added!");
+    clearSubjectFields();
     loadSubjects();
   }
-});
+}
 
-// === Load Teachers ===
+function clearSubjectFields() {
+  document.getElementById("subjectName").value = "";
+  document.getElementById("subjectCode").value = "";
+}
+
+// 📥 Load Teachers
 async function loadTeachers() {
-  const { data, error } = await supabase.from("teachers").select("*");
   const list = document.getElementById("teacherList");
-  list.innerHTML = "";
-  if (data && data.length > 0) {
-    data.forEach((t) => {
-      const li = document.createElement("li");
-      li.textContent = `${t.name} — ${t.lectures_per_week} lectures/week`;
-      list.appendChild(li);
-    });
-  } else {
-    list.innerHTML = "<li>No teachers yet.</li>";
+  list.innerHTML = "Loading...";
+  const { data, error } = await supabase.from("teachers").select("*");
+
+  if (error) {
+    list.innerHTML = "Error loading teachers.";
+    return;
   }
+
+  if (!data || data.length === 0) {
+    list.innerHTML = "<li>No teachers added yet.</li>";
+    return;
+  }
+
+  list.innerHTML = "";
+  data.forEach((t) => {
+    const li = document.createElement("li");
+    li.textContent = `${t.name} — ${t.subject} (${t.lectures_per_week} lectures/week)`;
+    list.appendChild(li);
+  });
 }
 
-// === Load Subjects ===
+// 📥 Load Subjects
 async function loadSubjects() {
-  const { data, error } = await supabase.from("subjects").select("*");
   const list = document.getElementById("subjectList");
-  list.innerHTML = "";
-  if (data && data.length > 0) {
-    data.forEach((s) => {
-      const li = document.createElement("li");
-      li.textContent = s.name;
-      list.appendChild(li);
-    });
-  } else {
-    list.innerHTML = "<li>No subjects yet.</li>";
-  }
-}
+  list.innerHTML = "Loading...";
+  const { data, error } = await supabase.from("subjects").select("*");
 
-loadTeachers();
-loadSubjects();
+  if (error) {
+    list.innerHTML = "Error loading subjects.";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    list.innerHTML = "<li>No subjects added yet.</li>";
+    return;
+  }
+
+  list.innerHTML = "";
+  data.forEach((s) => {
+    const li = document.createElement("li");
+    li.textContent = `${s.code} — ${s.name}`;
+    list.appendChild(li);
+  });
+                                                           }
