@@ -5,58 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Timely - College Timetable Generator</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <h2>Teacher</h2>
-<input id="teacherName" placeholder="Teacher Name" />
-<input id="teacherSubject" placeholder="Subject" />
-<input id="teacherLectures" type="number" placeholder="Lectures/week" />
-<button onclick="addTeacher()">Add Teacher</button>
-
-<h2>Course</h2>
-<input id="courseName" placeholder="Course Name" />
-<input id="courseStart" type="time" />
-<input id="courseEnd" type="time" />
-<input id="courseDuration" type="number" placeholder="Period Duration (min)" />
-<button onclick="addCourse()">Add Course</button>
-
-<h2>Subject</h2>
-<input id="subjectCourse" type="number" placeholder="Course ID" />
-<input id="subjectName" placeholder="Subject Name" />
-<button onclick="addSubject()">Add Subject</button>
-
-<h2>Timetable</h2>
-<button onclick="generateTimetable()">Generate Timetable</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="script.js"></script>
   <header>
-    <h1>📅 Timely</h1>
+    <h1>🕒 Timely</h1>
     <p>Smart College Timetable Generator</p>
   </header>
 
   <main>
+    <!-- Add Teacher Section -->
     <section class="card">
       <h2>Add Teacher</h2>
-      <form id="teacher-form">
-        <input type="text" id="name" placeholder="Teacher Name" required />
-        <input type="text" id="subject" placeholder="Subject" required />
-        <input type="number" id="lectures" placeholder="Lectures/Week" required />
-        <button type="submit">Add Teacher</button>
-      </form>
+      <input type="text" id="teacherName" placeholder="Teacher Name" />
+      <input type="number" id="lecturesPerWeek" placeholder="Lectures per Week" />
+      <button id="addTeacherBtn">Add Teacher</button>
+      <p class="message" id="teacherMsg"></p>
     </section>
 
+    <!-- Add Subject Section -->
     <section class="card">
-      <h2>Teacher List</h2>
-      <div id="teacher-list">Loading...</div>
+      <h2>Add Subject</h2>
+      <input type="text" id="subjectName" placeholder="Subject Name" />
+      <button id="addSubjectBtn">Add Subject</button>
+      <p class="message" id="subjectMsg"></p>
+    </section>
+
+    <!-- List Teachers -->
+    <section class="card">
+      <h2>Teachers List</h2>
+      <ul id="teacherList"></ul>
+    </section>
+
+    <!-- List Subjects -->
+    <section class="card">
+      <h2>Subjects List</h2>
+      <ul id="subjectList"></ul>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 Timely | Powered by Supabase</p>
+    <p>Powered by Supabase • Built by Ajay (Timely)</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.js"></script>
 </body>
 </html>
