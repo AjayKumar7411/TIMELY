@@ -35,7 +35,7 @@ async function addClass() {
   else alert("✅ Class added!");
 }
 
-// === Generate Timetable (Simple Version) ===
+// === Generate Smarter Timetable ===
 async function generateTimetable() {
   const { data: teachers } = await supabase.from("teachers").select("*");
   const { data: classes } = await supabase.from("classes").select("*");
@@ -45,16 +45,54 @@ async function generateTimetable() {
     return;
   }
 
-  let output = "<h4>Generated Timetable (Sample)</h4>";
-
-  classes.forEach((cls) => {
-    output += `<strong>${cls.name} - ${cls.section}</strong><br>`;
-    for (let i = 1; i <= cls.total_periods_per_week; i++) {
-      const teacher = teachers[Math.floor(Math.random() * teachers.length)];
-      output += `Period ${i}: ${teacher.subject} (${teacher.name})<br>`;
-    }
-    output += "<hr>";
+  // Track teacher workloads
+  const teacherLoad = {};
+  teachers.forEach((t) => {
+    teacherLoad[t.name] = 0;
   });
 
-  document.getElementById("timetableResult").innerHTML = output;
+  let output = "<h4>Generated Smart Timetable</h4>";
+
+  // Generate timetable for each class
+  for (const cls of classes) {
+    output += `<strong>${cls.name} - ${cls.section}</strong><br>`;
+    let previousTeacher = null;
+    let consecutiveCount = 0;
+
+    for (let period = 1; period <= cls.total_periods_per_week; period++) {
+      // Pick only teachers who have remaining capacity
+      const availableTeachers = teachers.filter((t) => teacherLoad[t.name] < t.lectures_per_week);
+
+      if (availableTeachers.length === 0) {
+        output += `Period ${period}: No available teacher 😕<br>`;
+        continue;
+      }
+
+      // Avoid repeating same teacher for too many consecutive classes
+      let teacher;
+      do {
+        teacher = availableTeachers[Math.floor(Math.random() * availableTeachers.length)];
+      } while (teacher === previousTeacher && consecutiveCount >= 2 && availableTeachers.length > 1);
+
+      // Increment workload
+      teacherLoad[teacher.name]++;
+
+      // Manage break logic
+      if (teacher === previousTeacher) {
+        consecutiveCount++;
+      } else {
+        consecutiveCount = 1;
+      }
+
+      // Assign class period
+      output += `Period ${period}: ${teacher.subject} (${teacher.name})<br>`;
+
+      previousTeacher = teacher;
     }
+
+    output += "<hr>";
+  }
+
+  document.getElementById("timetableResult").innerHTML = output;
+      }
+
