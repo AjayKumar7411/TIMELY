@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Timely - College Timetable Generator</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timely - Smart College Timetable</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
   <header>
-    <h1>🕒 Timely</h1>
+    <h1>📅 Timely</h1>
     <p>Smart College Timetable Generator</p>
   </header>
 
   <main>
-    <!-- Add Teacher Section -->
+    <!-- Teacher Section -->
     <section class="card">
       <h2>Add Teacher</h2>
-      <input type="text" id="teacherName" placeholder="Teacher Name" />
-      <input type="number" id="lecturesPerWeek" placeholder="Lectures per Week" />
-      <button id="addTeacherBtn">Add Teacher</button>
-      <p class="message" id="teacherMsg"></p>
+      <input id="teacherName" type="text" placeholder="Teacher Name">
+      <input id="teacherSubject" type="text" placeholder="Subject">
+      <input id="lecturesPerWeek" type="number" placeholder="Lectures per Week">
+      <button onclick="addTeacher()">Add Teacher</button>
+      <h3>Teacher List</h3>
+      <ul id="teacherList">Loading...</ul>
     </section>
 
-    <!-- Add Subject Section -->
+    <!-- Subject Section -->
     <section class="card">
       <h2>Add Subject</h2>
-      <input type="text" id="subjectName" placeholder="Subject Name" />
-      <button id="addSubjectBtn">Add Subject</button>
-      <p class="message" id="subjectMsg"></p>
+      <input id="subjectName" type="text" placeholder="Subject Name">
+      <input id="subjectCode" type="text" placeholder="Subject Code">
+      <button onclick="addSubject()">Add Subject</button>
+      <h3>Subject List</h3>
+      <ul id="subjectList">Loading...</ul>
     </section>
 
-    <!-- List Teachers -->
+    <!-- Timetable Section -->
     <section class="card">
-      <h2>Teachers List</h2>
-      <ul id="teacherList"></ul>
-    </section>
-
-    <!-- List Subjects -->
-    <section class="card">
-      <h2>Subjects List</h2>
-      <ul id="subjectList"></ul>
+      <h2>Timetable Preview</h2>
+      <p>Coming soon: automatic generation of conflict-free timetables!</p>
     </section>
   </main>
 
   <footer>
-    <p>Powered by Supabase • Built by Ajay (Timely)</p>
+    <p>Powered by Supabase & Timely</p>
   </footer>
 
   <script src="script.js"></script>
 </body>
-</html>
+  </html>
