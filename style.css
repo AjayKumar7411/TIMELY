@@ -1,78 +1,86 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-  color: #111;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f3f4f6;
+  color: #333;
+  padding: 1rem;
 }
 
 header {
-  background: #0070f3;
-  color: white;
-  padding: 20px 0;
-  margin-bottom: 20px;
-}
-
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  background: #0070f3;
-  border: none;
-  color: white;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #005fcc;
-}
-
-section {
-  margin: 20px auto;
-  max-width: 600px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #8e2de2, #4a00e0);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.container {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 25px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
   text-align: center;
+  padding: 1.5rem 0;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #2563eb;
+}
+
+header p {
+  font-size: 1rem;
+  color: #555;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card h2 {
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 0.7rem;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
 }
 
 button {
-  background: #4a00e0;
+  background: #2563eb;
   color: white;
+  padding: 0.8rem;
   border: none;
-  padding: 10px 15px;
   border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #8e2de2;
-  }
+  background: #1e40af;
+}
+
+#teacher-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.teacher {
+  padding: 0.8rem;
+  background: #e0f2fe;
+  border-radius: 8px;
+  border-left: 4px solid #2563eb;
+}
