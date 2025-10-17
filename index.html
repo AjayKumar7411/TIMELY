@@ -1,51 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timely - Smart College Timetable</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timely - Smart College Timetable Generator</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
-  <header>
-    <h1>📅 Timely</h1>
-    <p>Smart College Timetable Generator</p>
-  </header>
+  <div class="container">
+    <h1>Timely 🕒</h1>
+    <h2>Smart Timetable Generator</h2>
 
-  <main>
-    <!-- Teacher Section -->
-    <section class="card">
-      <h2>Add Teacher</h2>
-      <input id="teacherName" type="text" placeholder="Teacher Name">
-      <input id="teacherSubject" type="text" placeholder="Subject">
-      <input id="lecturesPerWeek" type="number" placeholder="Lectures per Week">
+    <div class="form-section">
+      <h3>Add Teacher</h3>
+      <input id="teacherName" placeholder="Teacher Name" />
+      <input id="teacherSubject" placeholder="Subject" />
+      <input id="lecturesPerWeek" type="number" placeholder="Max Lectures/Week" />
       <button onclick="addTeacher()">Add Teacher</button>
-      <h3>Teacher List</h3>
-      <ul id="teacherList">Loading...</ul>
-    </section>
+    </div>
 
-    <!-- Subject Section -->
-    <section class="card">
-      <h2>Add Subject</h2>
-      <input id="subjectName" type="text" placeholder="Subject Name">
-      <input id="subjectCode" type="text" placeholder="Subject Code">
-      <button onclick="addSubject()">Add Subject</button>
-      <h3>Subject List</h3>
-      <ul id="subjectList">Loading...</ul>
-    </section>
+    <div class="form-section">
+      <h3>Add Class</h3>
+      <input id="className" placeholder="Class Name" />
+      <input id="section" placeholder="Section" />
+      <input id="periods" type="number" placeholder="Total Periods/Week" />
+      <button onclick="addClass()">Add Class</button>
+    </div>
 
-    <!-- Timetable Section -->
-    <section class="card">
-      <h2>Timetable Preview</h2>
-      <p>Coming soon: automatic generation of conflict-free timetables!</p>
-    </section>
-  </main>
-
-  <footer>
-    <p>Powered by Supabase & Timely</p>
-  </footer>
+    <div class="form-section">
+      <h3>Generate Timetable</h3>
+      <button onclick="generateTimetable()">Generate</button>
+      <div id="timetableResult"></div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-  </html>
+        </html>
