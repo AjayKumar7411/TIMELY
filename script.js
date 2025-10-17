@@ -4,58 +4,99 @@ const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5cG5pZHZhc21jYWpubGFpc2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDI0MTksImV4cCI6MjA3NjExODQxOX0.0BkjTEbKmF0SsebnLgibfopwcCTYx3BT4diJVqGWhOM";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// === DOM Elements ===
-const form = document.getElementById("teacher-form");
-const list = document.getElementById("teacher-list");
-
-// === Load Teachers on Page Load ===
-async function loadTeachers() {
-  list.innerHTML = "Loading...";
-  const { data, error } = await supabase.from("teachers").select("*").order("id", { ascending: true });
-
-  if (error) {
-    list.innerHTML = `<p style="color:red;">Error loading teachers: ${error.message}</p>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.innerHTML = "<p>No teachers added yet.</p>";
-    return;
-  }
-
-  list.innerHTML = "";
-  data.forEach((teacher) => {
-    const div = document.createElement("div");
-    div.classList.add("teacher");
-    div.innerHTML = `<strong>${teacher.name}</strong> — ${teacher.subject} (${teacher.lectures_per_week} lectures/week)`;
-    list.appendChild(div);
-  });
+// === Helper: Show message ===
+function showMessage(msg) {
+  alert(msg);
 }
 
-// === Add Teacher Form Submit ===
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = document.getElementById("name").value.trim();
-  const subject = document.getElementById("subject").value.trim();
-  const lectures = parseInt(document.getElementById("lectures").value);
+// === Add Teacher ===
+async function addTeacher() {
+  const name = document.getElementById("teacherName").value;
+  const subject = document.getElementById("teacherSubject").value;
+  const lectures = parseInt(document.getElementById("teacherLectures").value);
 
-  if (!name || !subject || !lectures) {
-    alert("Please fill all fields!");
+  const { error } = await supabase.from("teachers").insert([
+    {
+      name,
+      subject,
+      lectures_per_week: lectures,
+      available: true,
+    },
+  ]);
+
+  if (error) showMessage("Error adding teacher: " + error.message);
+  else showMessage("Teacher added successfully!");
+}
+
+// === Add Course ===
+async function addCourse() {
+  const name = document.getElementById("courseName").value;
+  const start = document.getElementById("courseStart").value;
+  const end = document.getElementById("courseEnd").value;
+  const duration = parseInt(document.getElementById("courseDuration").value);
+
+  const { error } = await supabase.from("courses").insert([
+    {
+      name,
+      start_time: start,
+      end_time: end,
+      period_duration: duration,
+    },
+  ]);
+
+  if (error) showMessage("Error adding course: " + error.message);
+  else showMessage("Course added successfully!");
+}
+
+// === Add Subject ===
+async function addSubject() {
+  const courseId = parseInt(document.getElementById("subjectCourse").value);
+  const name = document.getElementById("subjectName").value;
+
+  const { error } = await supabase.from("subjects").insert([
+    {
+      course_id: courseId,
+      name,
+    },
+  ]);
+
+  if (error) showMessage("Error adding subject: " + error.message);
+  else showMessage("Subject added successfully!");
+}
+
+// === Generate Timetable === (basic random example)
+async function generateTimetable() {
+  const { data: teachers } = await supabase.from("teachers").select("*");
+  const { data: subjects } = await supabase.from("subjects").select("*");
+  const { data: courses } = await supabase.from("courses").select("*");
+
+  if (!teachers?.length || !subjects?.length || !courses?.length) {
+    showMessage("Please add teachers, subjects, and courses first!");
     return;
   }
 
-  const { error } = await supabase.from("teachers").insert([
-    { name, subject, lectures_per_week: lectures, available: true },
-  ]);
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  let generated = [];
 
-  if (error) {
-    alert("Error adding teacher: " + error.message);
-  } else {
-    alert("✅ Teacher added successfully!");
-    form.reset();
-    loadTeachers();
+  for (const course of courses) {
+    let period = 1;
+    for (const day of days) {
+      const randomTeacher =
+        teachers[Math.floor(Math.random() * teachers.length)];
+      const randomSubject =
+        subjects[Math.floor(Math.random() * subjects.length)];
+
+      generated.push({
+        course_id: course.id,
+        day_of_week: day,
+        period_number: period++,
+        subject_id: randomSubject.id,
+        teacher_id: randomTeacher.id,
+      });
+    }
   }
-});
 
-// === Initialize ===
-loadTeachers();
+  const { error } = await supabase.from("timetable_slots").insert(generated);
+  if (error) showMessage("Error generating timetable: " + error.message);
+  else showMessage("Timetable generated successfully!");
+}
