@@ -7,6 +7,29 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h2>Teacher</h2>
+<input id="teacherName" placeholder="Teacher Name" />
+<input id="teacherSubject" placeholder="Subject" />
+<input id="teacherLectures" type="number" placeholder="Lectures/week" />
+<button onclick="addTeacher()">Add Teacher</button>
+
+<h2>Course</h2>
+<input id="courseName" placeholder="Course Name" />
+<input id="courseStart" type="time" />
+<input id="courseEnd" type="time" />
+<input id="courseDuration" type="number" placeholder="Period Duration (min)" />
+<button onclick="addCourse()">Add Course</button>
+
+<h2>Subject</h2>
+<input id="subjectCourse" type="number" placeholder="Course ID" />
+<input id="subjectName" placeholder="Subject Name" />
+<button onclick="addSubject()">Add Subject</button>
+
+<h2>Timetable</h2>
+<button onclick="generateTimetable()">Generate Timetable</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="script.js"></script>
   <header>
     <h1>📅 Timely</h1>
     <p>Smart College Timetable Generator</p>
