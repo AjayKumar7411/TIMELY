@@ -8,60 +8,32 @@
 </head>
 <body>
   <header>
-    <h1>Timely</h1>
-    <p>AI-Powered College Timetable Generator</p>
+    <h1>📅 Timely</h1>
+    <p>Smart College Timetable Generator</p>
   </header>
 
   <main>
-    <section id="setup">
-      <h2>Setup Information</h2>
-      <button onclick="showForm('course')">Add Courses & Subjects</button>
-      <button onclick="showForm('lecturer')">Add Lecturers</button>
-      <button onclick="generateTimetable()">Generate Timetable</button>
+    <section class="card">
+      <h2>Add Teacher</h2>
+      <form id="teacher-form">
+        <input type="text" id="name" placeholder="Teacher Name" required />
+        <input type="text" id="subject" placeholder="Subject" required />
+        <input type="number" id="lectures" placeholder="Lectures/Week" required />
+        <button type="submit">Add Teacher</button>
+      </form>
     </section>
 
-    <section id="forms"></section>
-
-    <section id="timetable"></section>
+    <section class="card">
+      <h2>Teacher List</h2>
+      <div id="teacher-list">Loading...</div>
+    </section>
   </main>
 
   <footer>
-    <p>© 2025 Timely</p>
+    <p>© 2025 Timely | Powered by Supabase</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.js"></script>
 </body>
-  </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Timely - College Timetable Generator</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <h1>Timely 🕒</h1>
-    <p>Your smart timetable generator</p>
-
-    <form id="timetableForm">
-      <label>Number of Periods per Week:</label>
-      <input type="number" id="periods" required />
-
-      <label>Class Timings:</label>
-      <input type="text" id="timings" placeholder="e.g., 9AM-4PM" required />
-
-      <label>Number of Teachers per Subject:</label>
-      <input type="number" id="teachers" required />
-
-      <button type="submit">Generate Timetable</button>
-    </form>
-
-    <div id="result"></div>
-  </div>
-
-  <script type="module" src="script.js"></script>
-</body>
-                                              </html>
+</html>
