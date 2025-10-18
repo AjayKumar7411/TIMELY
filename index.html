@@ -1,123 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Timely — College Timetable Generator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timely - College Timetable Generator</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Supabase client (CDN ESM) -->
-  <script type="module">
-  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-  window.supabase = { createClient };
-  </script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container">
-      <h1>Timely</h1>
-      <p class="sub">Smart College Timetable Generator</p>
-    </div>
+  <header>
+    <h1>📅 Timely</h1>
+    <nav>
+      <button id="manageBtn">Manage Data</button>
+      <button id="generateBtn">Generate Timetable</button>
+      <button id="viewBtn">View Timetable</button>
+    </nav>
   </header>
 
-  <main class="container">
-    <nav class="tabs">
-      <button class="tab active" data-tab="manage">Manage</button>
-      <button class="tab" data-tab="generate">Generate</button>
-      <button class="tab" data-tab="view">View Timetable</button>
-    </nav>
-
-    <section id="manage" class="tab-pane active">
-      <div class="grid">
-        <div class="card">
-          <h2>Add Teacher</h2>
-          <input id="teacherName" placeholder="Full name" />
-          <input id="teacherSubject" placeholder="Subject (primary)" />
-          <input id="teacherLectures" type="number" placeholder="Max lectures per week" />
-          <button id="btnAddTeacher">Add Teacher</button>
-          <p id="teacherMsg" class="msg"></p>
-        </div>
-
-        <div class="card">
-          <h2>Add Subject</h2>
-          <input id="subjectName" placeholder="Subject name" />
-          <input id="subjectCode" placeholder="Code (optional)" />
-          <button id="btnAddSubject">Add Subject</button>
-          <p id="subjectMsg" class="msg"></p>
-        </div>
-
-        <div class="card">
-          <h2>Add Class / Stream</h2>
-          <input id="className" placeholder="Class name (e.g., BSc CS 1A)" />
-          <input id="classSection" placeholder="Section (optional)" />
-          <input id="classPeriods" type="number" placeholder="Periods per day (e.g., 6)" />
-          <button id="btnAddClass">Add Class</button>
-          <p id="classMsg" class="msg"></p>
-        </div>
-
-        <div class="card">
-          <h2>Teacher Availability</h2>
-          <select id="availTeacher"></select>
-          <select id="availDay">
-            <option value="Mon">Mon</option><option value="Tue">Tue</option><option value="Wed">Wed</option>
-            <option value="Thu">Thu</option><option value="Fri">Fri</option><option value="Sat">Sat</option>
-          </select>
-          <input id="availPeriod" type="number" placeholder="Period number (1..N)" />
-          <button id="btnAddAvail">Set Availability</button>
-          <p id="availMsg" class="msg"></p>
-        </div>
-      </div>
-
-      <div class="card full">
-        <h3>Data Preview</h3>
-        <div class="preview-grid">
-          <div>
-            <h4>Teachers</h4>
-            <ul id="teacherList"></ul>
-          </div>
-          <div>
-            <h4>Subjects</h4>
-            <ul id="subjectList"></ul>
-          </div>
-          <div>
-            <h4>Classes</h4>
-            <ul id="classList"></ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="generate" class="tab-pane">
-      <div class="card full">
-        <h2>Generate Smart Timetable</h2>
-        <label>Days to generate (comma-separated):</label>
-        <input id="daysInput" placeholder="Mon,Tue,Wed,Thu,Fri" />
-        <label>Periods per day:</label>
-        <input id="periodsPerDay" type="number" value="6" />
-        <label>Break after consecutive lectures (e.g., 3)</label>
-        <input id="breakAfter" type="number" value="3" />
-        <label>Period duration (minutes)</label>
-        <input id="periodDuration" type="number" value="50" />
-        <div style="margin-top:12px;">
-          <button id="btnGenerate">Generate Timetable</button>
-        </div>
-        <p id="generateMsg" class="msg"></p>
-      </div>
-    </section>
-
-    <section id="view" class="tab-pane">
-      <div class="card full">
-        <h2>Timetable</h2>
-        <div id="scheduleContainer"></div>
-      </div>
-    </section>
+  <main id="content">
+    <!-- dynamic content loads here -->
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <small>Timely • Powered by Supabase</small>
-    </div>
-  </footer>
+  <!-- Supabase v2 script -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    window.supabase = { createClient };
+  </script>
 
-  <script type="module" src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-    </html>
+</html>
