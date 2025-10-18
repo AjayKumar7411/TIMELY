@@ -37,62 +37,85 @@ async function addClass() {
 
 // === Generate Smarter Timetable ===
 async function generateTimetable() {
-  const { data: teachers } = await supabase.from("teachers").select("*");
-  const { data: classes } = await supabase.from("classes").select("*");
+  const { data: classes } = await supabase.from('classes').select('*');
+  const { data: teachers } = await supabase.from('teachers').select('*');
+  const { data: subjects } = await supabase.from('subjects').select('*');
 
-  if (!teachers.length || !classes.length) {
-    alert("Please add teachers and classes first!");
-    return;
+  const days = ['Mon','Tue','Wed','Thu','Fri'];
+  const periodsPerDay = 6;
+  const breakAfter = 3; // give a break after 3 consecutive lectures
+  const periodDuration = 60; // minutes
+
+  // Clear previous schedule
+  await supabase.from('timetable_schedule').delete().neq('id', 0);
+
+  for (const cls of classes) {
+    let startTime = new Date(`1970-01-01T09:00:00`);
+    for (const day of days) {
+      for (let p = 1; p <= periodsPerDay; p++) {
+        if (p === breakAfter + 1) {
+          // Insert break
+          await supabase.from('timetable_schedule').insert([{
+            class_id: cls.id,
+            day_of_week: day,
+            period_number: p,
+            start_time: startTime.toTimeString().slice(0,5),
+            end_time: new Date(startTime.getTime() + 15*60000).toTimeString().slice(0,5),
+            is_break: true
+          }]);
+          startTime = new Date(startTime.getTime() + 15*60000);
+          continue;
+        }
+
+        const randomSubject = subjects[Math.floor(Math.random() * subjects.length)];
+        const randomTeacher = teachers[Math.floor(Math.random() * teachers.length)];
+
+        const endTime = new Date(startTime.getTime() + periodDuration * 60000);
+        await supabase.from('timetable_schedule').insert([{
+          class_id: cls.id,
+          teacher_id: randomTeacher.id,
+          subject_id: randomSubject.id,
+          day_of_week: day,
+          period_number: p,
+          start_time: startTime.toTimeString().slice(0,5),
+          end_time: endTime.toTimeString().slice(0,5),
+          is_break: false
+        }]);
+        startTime = endTime;
+      }
+      startTime = new Date(`1970-01-01T09:00:00`); // reset each day
+    }
   }
 
-  // Track teacher workloads
-  const teacherLoad = {};
-  teachers.forEach((t) => {
-    teacherLoad[t.name] = 0;
+  alert("✅ Timetable generated with smart breaks!");
+    }
+async function showTimetable() {
+  const { data, error } = await supabase.from('timetable_schedule').select('*');
+  if (error) return alert(error.message);
+
+  const grouped = {};
+  data.forEach(row => {
+    if (!grouped[row.day_of_week]) grouped[row.day_of_week] = [];
+    grouped[row.day_of_week].push(row);
   });
 
-  let output = "<h4>Generated Smart Timetable</h4>";
-
-  // Generate timetable for each class
-  for (const cls of classes) {
-    output += `<strong>${cls.name} - ${cls.section}</strong><br>`;
-    let previousTeacher = null;
-    let consecutiveCount = 0;
-
-    for (let period = 1; period <= cls.total_periods_per_week; period++) {
-      // Pick only teachers who have remaining capacity
-      const availableTeachers = teachers.filter((t) => teacherLoad[t.name] < t.lectures_per_week);
-
-      if (availableTeachers.length === 0) {
-        output += `Period ${period}: No available teacher 😕<br>`;
-        continue;
-      }
-
-      // Avoid repeating same teacher for too many consecutive classes
-      let teacher;
-      do {
-        teacher = availableTeachers[Math.floor(Math.random() * availableTeachers.length)];
-      } while (teacher === previousTeacher && consecutiveCount >= 2 && availableTeachers.length > 1);
-
-      // Increment workload
-      teacherLoad[teacher.name]++;
-
-      // Manage break logic
-      if (teacher === previousTeacher) {
-        consecutiveCount++;
-      } else {
-        consecutiveCount = 1;
-      }
-
-      // Assign class period
-      output += `Period ${period}: ${teacher.subject} (${teacher.name})<br>`;
-
-      previousTeacher = teacher;
-    }
-
-    output += "<hr>";
+  let html = '';
+  for (const day in grouped) {
+    html += `<h3>${day}</h3><table border="1"><tr><th>Period</th><th>Subject</th><th>Teacher</th><th>Start</th><th>End</th></tr>`;
+    grouped[day].forEach(r => {
+      html += `<tr>
+        <td>${r.period_number}</td>
+        <td>${r.is_break ? 'BREAK' : r.subject_id}</td>
+        <td>${r.is_break ? '-' : r.teacher_id}</td>
+        <td>${r.start_time}</td>
+        <td>${r.end_time}</td>
+      </tr>`;
+    });
+    html += '</table>';
   }
+  
+  document.getElementById('scheduleDisplay').innerHTML = html;
+}
+await showTimetable();
 
-  document.getElementById("timetableResult").innerHTML = output;
-      }
 
